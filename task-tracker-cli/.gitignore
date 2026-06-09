@@ -9,3 +9,5 @@ build
 
 # Ignore IntelliJ settings
 .idea
+
+task-cli
