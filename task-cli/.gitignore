@@ -20,3 +20,5 @@
 # Local env files (secrets, overrides)
 .env
 .env.*
+
+task-cli
