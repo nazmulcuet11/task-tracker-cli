@@ -9,16 +9,20 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-  Add { description: String },
+  Add { 
+    #[arg(num_args = 1.., trailing_var_arg = true)]
+    description: Vec<String> 
+  },
   List,
 }
 
 fn main() {
     let cli = Cli::parse();
-    
+
     match cli.command {
         Commands::Add { description } => {
-            println!("Adding task: {description}");
+            let task_name = description.join(", ");
+            println!("Adding task: {task_name}");
         }
         Commands::List => {
             println!("Listing tasks...");
