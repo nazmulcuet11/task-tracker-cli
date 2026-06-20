@@ -2,14 +2,16 @@ package org.example
 
 import com.github.ajalt.clikt.core.main
 import java.nio.file.Files
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneOffset
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class AppTest {
-    private val fixedClock = Clock.fixed(Instant.parse("2026-06-20T10:00:00Z"), ZoneOffset.UTC)
+    private val fixedInstant = Instant.parse("2026-06-20T10:00:00Z")
+    private val fixedClock = object : Clock {
+        override fun now() = fixedInstant
+    }
 
     @Test
     fun addAndListTasks() {
@@ -55,8 +57,8 @@ class AppTest {
         assertEquals(task.id, reloaded.id)
         assertEquals("buy milk", reloaded.description)
         assertEquals(TaskStatus.TODO, reloaded.status)
-        assertEquals(fixedClock.instant(), reloaded.createdAt)
-        assertEquals(fixedClock.instant(), reloaded.updatedAt)
+        assertEquals(fixedInstant, reloaded.createdAt)
+        assertEquals(fixedInstant, reloaded.updatedAt)
     }
 }
 

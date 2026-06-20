@@ -4,11 +4,11 @@ import kotlinx.serialization.json.Json
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.time.Clock
+import kotlin.time.Clock
 
 class TaskStore(
     private val storageFile: Path = defaultStorageFile(),
-    private val clock: Clock = Clock.systemUTC(),
+    private val clock: Clock = Clock.System,
 ) {
     private val json = Json { prettyPrint = true }
 
