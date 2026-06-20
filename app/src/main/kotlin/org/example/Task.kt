@@ -16,6 +16,9 @@ data class Task(
     fun withDescription(description: String, clock: Clock = Clock.System): Task =
         copy(description = description, updatedAt = clock.now())
 
+    fun withStatus(status: TaskStatus, clock: Clock = Clock.System): Task =
+        copy(status = status, updatedAt = clock.now())
+
     companion object {
         fun create(
             description: String,

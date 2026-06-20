@@ -44,6 +44,20 @@ class TaskStore(
         return deleted
     }
 
+    fun markInProgress(id: String): Task = updateStatus(id, TaskStatus.IN_PROGRESS)
+
+    fun markDone(id: String): Task = updateStatus(id, TaskStatus.DONE)
+
+    private fun updateStatus(id: String, status: TaskStatus): Task {
+        val tasks = load().toMutableList()
+        val index = tasks.indexOfFirst { it.id == id }
+        require(index >= 0) { "Task not found: $id" }
+        val updated = tasks[index].withStatus(status, clock)
+        tasks[index] = updated
+        save(tasks)
+        return updated
+    }
+
     private fun load(): List<Task> {
         if (!Files.exists(storageFile)) {
             return emptyList()

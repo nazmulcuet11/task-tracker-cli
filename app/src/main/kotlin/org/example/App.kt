@@ -9,4 +9,11 @@ fun main(args: Array<String>) {
 
 internal fun buildCli(store: TaskStore = TaskStore()): TaskCli =
     TaskCli()
-        .subcommands(AddCommand(store), ListCommand(store), UpdateCommand(store), DeleteCommand(store))
+        .subcommands(
+            AddCommand(store),
+            ListCommand(store),
+            UpdateCommand(store),
+            DeleteCommand(store),
+            MarkInProgressCommand(store),
+            MarkDoneCommand(store),
+        )

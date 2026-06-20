@@ -73,6 +73,38 @@ class AppTest {
     }
 
     @Test
+    fun markInProgressUpdatesStatus() {
+        val storageFile = Files.createTempFile("tasks", ".json")
+        val store = TaskStore(storageFile, fixedClock)
+        val task = store.add("buy milk")
+
+        runCli(store, arrayOf("mark-in-progress", task.id))
+
+        assertEquals(TaskStatus.IN_PROGRESS, store.list().single().status)
+    }
+
+    @Test
+    fun markDoneUpdatesStatus() {
+        val storageFile = Files.createTempFile("tasks", ".json")
+        val store = TaskStore(storageFile, fixedClock)
+        val task = store.add("buy milk")
+
+        runCli(store, arrayOf("mark-done", task.id))
+
+        assertEquals(TaskStatus.DONE, store.list().single().status)
+    }
+
+    @Test
+    fun markInProgressFailsWhenTaskNotFound() {
+        val storageFile = Files.createTempFile("tasks", ".json")
+        val store = TaskStore(storageFile, fixedClock)
+
+        assertFailsWith<IllegalArgumentException> {
+            store.markInProgress("missing-id")
+        }
+    }
+
+    @Test
     fun taskPersistsAllFieldsAsJson() {
         val storageFile = Files.createTempFile("tasks", ".json")
         val store = TaskStore(storageFile, fixedClock)
