@@ -10,4 +10,8 @@ build
 # Ignore IntelliJ settings
 .idea
 
+# Convenient symlink to the binary
+# Created by the command ln -s ./app/build/install/task-cli/bin/task-cli task-cli
 task-cli
+
+.DS_Store
