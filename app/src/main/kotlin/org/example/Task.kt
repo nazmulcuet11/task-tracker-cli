@@ -13,6 +13,9 @@ data class Task(
     val createdAt: Instant,
     val updatedAt: Instant,
 ) {
+    fun withDescription(description: String, clock: Clock = Clock.System): Task =
+        copy(description = description, updatedAt = clock.now())
+
     companion object {
         fun create(
             description: String,

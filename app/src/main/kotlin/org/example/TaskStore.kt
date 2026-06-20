@@ -23,6 +23,17 @@ class TaskStore(
 
     fun list(): List<Task> = load()
 
+    fun update(id: String, description: String): Task {
+        require(description.isNotBlank()) { "Description cannot be empty" }
+        val tasks = load().toMutableList()
+        val index = tasks.indexOfFirst { it.id == id }
+        require(index >= 0) { "Task not found: $id" }
+        val updated = tasks[index].withDescription(description, clock)
+        tasks[index] = updated
+        save(tasks)
+        return updated
+    }
+
     private fun load(): List<Task> {
         if (!Files.exists(storageFile)) {
             return emptyList()

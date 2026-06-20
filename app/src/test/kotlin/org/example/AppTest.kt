@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.main
 import java.nio.file.Files
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -44,6 +45,31 @@ class AppTest {
         runCli(store, arrayOf("add", "finish", "project", "report"))
 
         assertEquals("finish project report", store.list().single().description)
+    }
+
+    @Test
+    fun updateChangesDescription() {
+        val storageFile = Files.createTempFile("tasks", ".json")
+        val store = TaskStore(storageFile, fixedClock)
+        val task = store.add("buy milk")
+
+        runCli(store, arrayOf("update", task.id, "Buy groceries and cook dinner"))
+
+        val updated = store.list().single()
+        assertEquals("Buy groceries and cook dinner", updated.description)
+        assertEquals(task.id, updated.id)
+        assertEquals(task.status, updated.status)
+        assertEquals(task.createdAt, updated.createdAt)
+    }
+
+    @Test
+    fun updateFailsWhenTaskNotFound() {
+        val storageFile = Files.createTempFile("tasks", ".json")
+        val store = TaskStore(storageFile, fixedClock)
+
+        assertFailsWith<IllegalArgumentException> {
+            store.update("missing-id", "new description")
+        }
     }
 
     @Test
