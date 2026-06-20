@@ -34,6 +34,16 @@ class TaskStore(
         return updated
     }
 
+    fun delete(id: String): Task {
+        val tasks = load().toMutableList()
+        val index = tasks.indexOfFirst { it.id == id }
+        require(index >= 0) { "Task not found: $id" }
+        val deleted = tasks[index]
+        tasks.removeAt(index)
+        save(tasks)
+        return deleted
+    }
+
     private fun load(): List<Task> {
         if (!Files.exists(storageFile)) {
             return emptyList()
