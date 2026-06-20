@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 class AppTest {
     @Test
     fun addAndListTasks() {
-        val storageFile = Files.createTempFile("tasks", ".txt")
+        val storageFile = Files.createTempFile("tasks", ".json")
         val store = TaskStore(storageFile)
 
         store.add("buy milk")
@@ -19,7 +19,7 @@ class AppTest {
 
     @Test
     fun listReturnsEmptyWhenNoTasks() {
-        val storageFile = Files.createTempFile("tasks", ".txt")
+        val storageFile = Files.createTempFile("tasks", ".json")
         val store = TaskStore(storageFile)
 
         assertEquals(emptyList(), store.list())
@@ -27,7 +27,7 @@ class AppTest {
 
     @Test
     fun addSupportsMultiWordItems() {
-        val storageFile = Files.createTempFile("tasks", ".txt")
+        val storageFile = Files.createTempFile("tasks", ".json")
         val store = TaskStore(storageFile)
 
         runCli(store, arrayOf("add", "finish", "project", "report"))
