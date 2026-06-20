@@ -27,8 +27,7 @@ dependencies {
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // CLI argument parsing (core module avoids Mordant/JNA native-access warnings)
-    implementation(libs.clikt.core)
+    implementation(libs.clikt)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -42,6 +41,7 @@ application {
     // Define the main class for the application.
     mainClass = "org.example.AppKt"
     applicationName = "task-cli"
+    applicationDefaultJvmArgs = listOf("--enable-native-access=ALL-UNNAMED")
 }
 
 tasks.named<Test>("test") {
