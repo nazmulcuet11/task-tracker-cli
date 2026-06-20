@@ -2,11 +2,11 @@
 # https://docs.gradle.org/current/userguide/version_catalogs.html#sec::toml-dependencies-format
 
 [versions]
-guava = "33.5.0-jre"
+clikt = "5.1.0"
 junit-jupiter-engine = "6.0.1"
 
 [libraries]
-guava = { module = "com.google.guava:guava", version.ref = "guava" }
+clikt-core = { module = "com.github.ajalt.clikt:clikt-core", version.ref = "clikt" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
 
 [plugins]

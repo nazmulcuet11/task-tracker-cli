@@ -27,8 +27,8 @@ dependencies {
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // This dependency is used by the application.
-    implementation(libs.guava)
+    // CLI argument parsing (core module avoids Mordant/JNA native-access warnings)
+    implementation(libs.clikt.core)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
