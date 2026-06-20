@@ -12,8 +12,8 @@ internal class AddCommand(
     private val itemParts by argument().multiple(required = true)
 
     override fun run() {
-        val item = itemParts.joinToString(" ")
-        store.add(item)
-        echo("Added: $item")
+        val description = itemParts.joinToString(" ")
+        val task = store.add(description)
+        echo("Added: [${task.status.label}] ${task.description} (${task.id})")
     }
 }

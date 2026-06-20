@@ -4,20 +4,26 @@ import kotlinx.serialization.json.Json
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.time.Clock
 
-class TaskStore(private val storageFile: Path = defaultStorageFile()) {
+class TaskStore(
+    private val storageFile: Path = defaultStorageFile(),
+    private val clock: Clock = Clock.systemUTC(),
+) {
     private val json = Json { prettyPrint = true }
 
-    fun add(item: String) {
-        require(item.isNotBlank()) { "Item cannot be empty" }
+    fun add(description: String): Task {
+        require(description.isNotBlank()) { "Item cannot be empty" }
         val tasks = load().toMutableList()
-        tasks.add(item)
+        val task = Task.create(description, clock)
+        tasks.add(task)
         save(tasks)
+        return task
     }
 
-    fun list(): List<String> = load()
+    fun list(): List<Task> = load()
 
-    private fun load(): List<String> {
+    private fun load(): List<Task> {
         if (!Files.exists(storageFile)) {
             return emptyList()
         }
@@ -28,7 +34,7 @@ class TaskStore(private val storageFile: Path = defaultStorageFile()) {
         return json.decodeFromString<TaskFile>(content).tasks
     }
 
-    private fun save(tasks: List<String>) {
+    private fun save(tasks: List<Task>) {
         Files.createDirectories(storageFile.parent)
         Files.writeString(storageFile, json.encodeToString(TaskFile(tasks)))
     }
