@@ -21,7 +21,10 @@ class TaskStore(
         return task
     }
 
-    fun list(): List<Task> = load()
+    fun list(status: TaskStatus? = null): List<Task> {
+        val tasks = load()
+        return if (status == null) tasks else tasks.filter { it.status == status }
+    }
 
     fun update(id: String, description: String): Task {
         require(description.isNotBlank()) { "Description cannot be empty" }

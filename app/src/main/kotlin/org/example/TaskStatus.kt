@@ -13,4 +13,11 @@ enum class TaskStatus(val label: String) {
 
     @SerialName("done")
     DONE("done"),
+    ;
+
+    companion object {
+        fun fromLabel(label: String): TaskStatus =
+            entries.firstOrNull { it.label == label }
+                ?: throw IllegalArgumentException("Invalid status: $label")
+    }
 }

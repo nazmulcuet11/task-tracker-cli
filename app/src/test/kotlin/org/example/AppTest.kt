@@ -105,6 +105,22 @@ class AppTest {
     }
 
     @Test
+    fun listFiltersByStatus() {
+        val storageFile = Files.createTempFile("tasks", ".json")
+        val store = TaskStore(storageFile, fixedClock)
+        val todoTask = store.add("todo task")
+        val inProgressTask = store.add("in progress task")
+        store.markInProgress(inProgressTask.id)
+        val doneTask = store.add("done task")
+        store.markDone(doneTask.id)
+
+        assertEquals(listOf(todoTask.id), store.list(TaskStatus.TODO).map { it.id })
+        assertEquals(listOf(inProgressTask.id), store.list(TaskStatus.IN_PROGRESS).map { it.id })
+        assertEquals(listOf(doneTask.id), store.list(TaskStatus.DONE).map { it.id })
+        assertEquals(3, store.list().size)
+    }
+
+    @Test
     fun taskPersistsAllFieldsAsJson() {
         val storageFile = Files.createTempFile("tasks", ".json")
         val store = TaskStore(storageFile, fixedClock)
